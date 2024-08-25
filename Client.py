@@ -7,6 +7,12 @@ import socket
 from datetime import datetime
 from threading import Thread
 
+'''
+Current Issues:
+1. Client needs to stop the daemon thread it created gracefully. See this website for more detail: https://superfastpython.com/stop-daemon-thread/.
+2. Need to limit the max and min length of username. After that, adjust the name format with printf based on the max length.
+'''
+
 # Keep listening for messages broadcasted to this client
 def listen_for_messages(clientSocket):
     while True:
@@ -47,10 +53,13 @@ if __name__ == '__main__':
     # Keep 'staying' in the chatroom until the client breaks with input 'q' or key-combination [Ctrl+c]
     while True:
         # Input message we want to send to the server
+        print('\nType a message to send to the chatroom, or')
+        print('Type q to disconnect')
         message = input()
         
         # A hard-code way to exit the program
         if message.lower() == 'q':
+            print('\nDisconnected from the chatroom')
             break
         
         # Add the datetime and name of the sender to the message

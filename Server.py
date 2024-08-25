@@ -7,6 +7,17 @@
 import socket
 from threading import Thread
 
+'''
+Current Issues:
+1. Server cannot be found by devices other than its same device. Need to update SERVER_HOST to Server device's private IP address.
+2. Potential improvement: Do some printing in the Server terminal:
+    a. print out the username with the address for each newly joined Client.
+    b. print out a line stating which Client has joined or leaved the chatroom.
+    c. print out the current chatroom (with pairs of username and address) whenever a Client joins or leaves.
+3. Add a feature where the Server handles multiple chatrooms at the same time.
+   Client can create a new room or join an existing room via a unique valid room code.
+'''
+
 # Keep listening for a message from the conn socket
 # Whenever a message is received, broadcast it to all other connected clients
 def listen_for_client(conn):
