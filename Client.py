@@ -1,49 +1,66 @@
 # Client.py
 
+# Run the program with command: python3 Client.py
+# Make sure to run the server program (Server.py) first before running the client program
+
 import socket
-import random
-from threading import Thread
 from datetime import datetime
+from threading import Thread
 
-# server's IP address
-# if the server is not on this machine, 
-# put the private (network) IP address (e.g 192.168.1.2)
-SERVER_HOST = "127.0.0.1"
-SERVER_PORT = 5002 # server's port
-separator_token = "<SEP>" # we will use this to separate the client name & message
-
-# initialize TCP socket
-s = socket.socket()
-print(f"[*] Connecting to {SERVER_HOST}:{SERVER_PORT}...")
-# connect to the server
-s.connect((SERVER_HOST, SERVER_PORT))
-print("[+] Connected.")
-# prompt the client for a name
-name = input("Enter your name: ")
-
-def listen_for_messages():
+# Keep listening for messages broadcasted to this client
+def listen_for_messages(clientSocket):
     while True:
-        message = s.recv(1024).decode()
-        print("\n" + message)
+        message = clientSocket.recv(1024)
+        print('\n' + message.decode())
 
-# make a thread that listens for messages to this client & print them
-t = Thread(target=listen_for_messages)
-# make the thread daemon so it ends whenever the main thread ends
-t.daemon = True
-# start the thread
-t.start()
+    return
 
-while True:
-    # input message we want to send to the server
-    to_send =  input()
-    # a way to exit the program
-    if to_send.lower() == 'q':
-        break
-    # add the datetime, name & the color of the sender
-    date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
-    to_send = f"[{date_now}] {name}{separator_token}{to_send}"
-    # finally, send the message
-    s.send(to_send.encode())
+if __name__ == '__main__': 
+    # Server's IP address and port number
+    # If the server is not on this same machine, use the private IP address
+    SERVER_HOST = '127.0.0.1'
+    SERVER_PORT = 5000
 
-# close the socket
-s.close()
+    # Token that will be used to separate the client name & message
+    separator_token = '<SEP>'
+
+    # Initialize TCP socket
+    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    # Connect to the server
+    print(f'[*] Connecting to {SERVER_HOST}:{SERVER_PORT}...')
+    clientSocket.connect((SERVER_HOST, SERVER_PORT))
+    print('[+] Connected.')
+
+    # Prompt the client for a name with user keyboard input
+    name = input('Enter your name: ')
+
+    # Make a thread that listens for messages broadcasted to this client and print them
+    t = Thread(target=listen_for_messages, args=(clientSocket,))
+    
+    # Make the thread daemon so it ends whenever the main thread ends
+    t.daemon = True
+    
+    # Start the thread
+    t.start()
+
+    # Keep 'staying' in the chatroom until the client breaks with input 'q' or key-combination [Ctrl+c]
+    while True:
+        # Input message we want to send to the server
+        message = input()
+        
+        # A hard-code way to exit the program
+        if message.lower() == 'q':
+            break
+        
+        # Add the datetime and name of the sender to the message
+        date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
+        message = f'[{date_now}] {name}{separator_token}{message}'
+        
+        # Send the message to server
+        clientSocket.send(message.encode())
+
+    # Close the socket
+    clientSocket.close()
+    
+    exit(0)
