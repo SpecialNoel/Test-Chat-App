@@ -9,6 +9,7 @@ An attempt on the tutorial of building a chat application that works on consoles
 Follow these steps to run the Test-Chat-App program.
 ### 1. Run the server program
 a) In terminal, use command ```cd Test-Chat-App``` to change the current folder to Test-Chat-App.
+
 b) Use command ```python3 Server.py``` to start the server program.
 
 Use key-combination ```[Ctrl+c]``` in the same terminal to terminate the server program.
