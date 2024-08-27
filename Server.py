@@ -16,6 +16,7 @@ Current Issues:
     c. print out the current chatroom (with pairs of username and address) whenever a Client joins or leaves.
 3. Add a feature where the Server handles multiple chatrooms at the same time.
    Client can create a new room or join an existing room via a unique valid room code.
+4. Make this application compatible to other devices, such as iOS.
 '''
 
 # Keep listening for a message from the conn socket
@@ -92,4 +93,7 @@ if __name__ == '__main__':
     serverSocket.close()
     
     exit(0)
+<<<<<<< HEAD
     
+=======
+>>>>>>> 579f0c5c4733dd4584e2aa776fa112199acc675b
