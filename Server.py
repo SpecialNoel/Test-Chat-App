@@ -93,7 +93,3 @@ if __name__ == '__main__':
     serverSocket.close()
     
     exit(0)
-<<<<<<< HEAD
-    
-=======
->>>>>>> 579f0c5c4733dd4584e2aa776fa112199acc675b
